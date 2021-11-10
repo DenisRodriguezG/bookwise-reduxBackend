@@ -54,4 +54,4 @@ app.post('/v2/users', (req, res) => {
 })
 
 //listen
-app.listen(port, () => console.log(`listening on the port ${port}`));
+app.listen(port, "0.0.0.0", () => console.log(`listening on the port ${port}`));
