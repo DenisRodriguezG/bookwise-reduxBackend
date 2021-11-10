@@ -5,7 +5,7 @@ import dataUsers from './dataUsers.js';
 
 //app config
 const app = express();
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 
 //middlewares
 app.use(express.json());
@@ -54,4 +54,4 @@ app.post('/v2/users', (req, res) => {
 })
 
 //listen
-app.listen(port, "0.0.0.0", () => console.log(`listening on the port ${port}`));
+app.listen(port, () => console.log(`listening on the port ${port}`));
