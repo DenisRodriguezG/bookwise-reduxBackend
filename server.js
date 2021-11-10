@@ -10,6 +10,11 @@ const port = process.env.port || 8081;
 //middlewares
 app.use(express.json());
 app.use(cors());
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'),
+    res.setHeader('Access-Control-Allow-Headers', '*'),
+    next()
+})
 
 //database connect
 const connectionDatabase = 'mongodb+srv://denis:PMh1yaNra0znPtSt@cluster0.f884u.mongodb.net/bookwise?retryWrites=true&w=majority';
