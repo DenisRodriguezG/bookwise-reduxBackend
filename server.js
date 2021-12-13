@@ -98,6 +98,23 @@ app.post('/v2/users', (req, res) => {
         }
     })
 })
+app.post('/v3/update', (req, res) => {
+    const id = req.body._id
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const age = req.body.age;
+    const city = req.body.city;
+    dataUsers.findOneAndUpdate({_id: id}, {firstName: firstName, lastName: lastName, age: age, city: city }, (error, data) => {
+        if(error)
+        {
+            console.log(error)
+        }
+        else
+        {
+            console.log(data)
+        }
+    })
+})
 
 //listen
 app.listen(port, () => console.log(`listening on the port ${port}`));
