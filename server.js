@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dataUsers from './dataUsers.js';
+import likesUser from './tableLikes.js';
 import Pusher from 'pusher';
 
 //app config
@@ -112,6 +113,105 @@ app.post('/v3/update', (req, res) => {
         else
         {
             console.log(data)
+        }
+    })
+})
+
+app.post('/v1/likes', (req, res) => {
+    let likeBook = req.body;
+    let _idBook = req.body._idBook;
+    let bookFind = false;
+    console.log(likeBook);
+   /* likesUser.findOne({_idBook: _idBook}, (error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            console.log(data)
+            if(data !== null)
+            {
+                bookFind = true;
+            }
+            else
+            {
+                bookFind = false;
+            }
+        }
+    });
+    if(bookFind)
+    {
+        likesUser.deleteOne({_idBook: _idBook}, (error, data) => {
+                    if(error)
+                    {
+                        res.status(500).send(error);
+                    }
+                    else
+                    {
+                        res.status(200).send(data);
+                    }
+                });
+    }
+    else
+    {
+        likesUser.create(likeBook, (error, data) => {
+            if(error)
+            {
+                res.status(500).send(error);
+            }
+            else
+            {
+                res.status(201).send(data);
+            }
+            });
+    }*/
+    likesUser.findOne({_idBook: _idBook}, (error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            if(data)
+            {
+                likesUser.deleteOne({_idBook: _idBook}, (error, data) => {
+                    if(error)
+                    {
+                        res.status(500).send(error);
+                    }
+                    else
+                    {
+                        res.status(200).send(data);
+                    }
+                });
+            }
+            else
+            {
+                likesUser.create(likeBook, (error, data) => {
+                    if(error)
+                    {
+                        res.status(500).send(error);
+                    }
+                    else
+                    {
+                        res.status(201).send(data);
+                    }
+                    });
+            }
+        }
+    })
+});
+
+app.get('/v1/likes', (req, res) => {
+    likesUser.find((error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            res.status(200).send(data);
         }
     })
 })
