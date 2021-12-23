@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const listLikesSchema = mongoose.Schema(
     {
-        _id: String,
+        idUser: String,
         _idBook: String,
         urlBook: String,
         title: String,

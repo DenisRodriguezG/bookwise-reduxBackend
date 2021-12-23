@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dataUsers from './dataUsers.js';
 import likesUser from './tableLikes.js';
+import suggerensUser from './comentUser.js';
+import historyUser from './historyUser.js';
 import Pusher from 'pusher';
 
 //app config
@@ -118,11 +120,12 @@ app.post('/v3/update', (req, res) => {
 })
 
 app.post('/v1/likes', (req, res) => {
-    let likeBook = req.body;
+    const likeBook = req.body;
+    let idUser = req.body.idUser;
     let _idBook = req.body._idBook;
     let bookFind = false;
-    console.log(likeBook);
-   /* likesUser.findOne({_idBook: _idBook}, (error, data) => {
+    
+    /*likesUser.findOne({_idBook: _idBook}, (error, data) => {
         if(error)
         {
             res.status(500).send(error);
@@ -166,6 +169,17 @@ app.post('/v1/likes', (req, res) => {
             }
             });
     }*/
+    
+    /*likesUser.create(likeBook, (error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            res.status(201).send(data);
+        }
+        });*//*
     likesUser.findOne({_idBook: _idBook}, (error, data) => {
         if(error)
         {
@@ -173,9 +187,10 @@ app.post('/v1/likes', (req, res) => {
         }
         else
         {
-            if(data)
+            console.log(data);
+            if(data !== null)
             {
-                likesUser.deleteOne({_idBook: _idBook}, (error, data) => {
+                likesUser.deleteOne({idUser: data.idUser, _idBook: data._idBook}, (error, data) => {
                     if(error)
                     {
                         res.status(500).send(error);
@@ -200,11 +215,89 @@ app.post('/v1/likes', (req, res) => {
                     });
             }
         }
+    })*/
+    
+    likesUser.findOne({idUser: idUser, _idBook: _idBook}, (error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            console.log(data);
+            if(data !== null)
+            {
+                likesUser.deleteOne({idUser: data.idUser, _idBook: _idBook}, (error, data) => {
+                    if(error)
+                    {
+                        res.status(500).send(error);
+                    }
+                    else{
+                        res.status(200).send(data);
+                    }
+                })
+            }
+            else
+            {
+                likesUser.create(likeBook, (error, data) => {
+                    if(error)
+                    {
+                        res.status(500).send(error);
+                    }
+                    else
+                    {
+                        res.status(201).send(data);
+                    }
+                })
+            }
+        }
     })
 });
 
 app.get('/v1/likes', (req, res) => {
     likesUser.find((error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            res.status(200).send(data);
+        }
+    })
+})
+
+
+app.post('/v1/suggerens', (req, res) => {
+    const suggeren = req.body;
+    suggerensUser.create(suggeren, (error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            res.status(201).send(data);
+        }
+    })
+})
+
+app.post('/v1/history', (req, res) => {
+    const movementUser = req.body;
+    historyUser.create(movementUser, (error, data) => {
+        if(error)
+        {
+            res.status(500).send(error);
+        }
+        else
+        {
+            res.status(201).send(data);
+        }
+    })
+})
+
+app.get('/v1/history', (req, res) => {
+    historyUser.find((error, data) => {
         if(error)
         {
             res.status(500).send(error);
